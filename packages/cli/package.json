@@ -1,15 +1,20 @@
 {
-  "name": "@flat/cli",
+  "name": "@lowl/cli",
   "version": "0.0.1",
-  "description": "",
-  "main": "index.js",
+  "description": "Component for bulding CLI interfaces for LOWL framework",
+  "main": "dist/src/index.js",
+  "typings": "dist/src/index.d.ts",
   "scripts": {
-    "build": "./node_modules/typescript/bin/tsc"
+    "build": "./node_modules/typescript/bin/tsc",
+    "prepublishOnly": "npm run build"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^13.1.2",
     "typescript": "^3.7.4"
-  }
+  },
+  "files": [
+    "dist/src"
+  ]
 }
