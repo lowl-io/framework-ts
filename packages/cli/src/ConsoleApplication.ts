@@ -76,7 +76,10 @@ export class ConsoleApplication {
                     if (index in argvs) {
                         slice++;
 
-                        resultArguments[argumentName] = argvs[index];
+                        resultArguments[argumentName] = this.formatArgumentValue(
+                            argvs[index],
+                            argumentSchema
+                        );
                     } else {
                         if (argumentSchema.required) {
                             throw new Error(
