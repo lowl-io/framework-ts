@@ -1,4 +1,4 @@
-import { CommandInterface } from './AbstractCommand';
+import { CommandInterface, ArgumentSchema, OptionSchema, SupportedType } from './AbstractCommand';
 import { HelpCommand } from './HelpCommand';
 
 export class ConsoleApplication {
@@ -24,6 +24,38 @@ export class ConsoleApplication {
         for (const command of commands) {
             this.addCommand(command);
         }
+    }
+
+    protected convertValue(value: any, type: SupportedType)
+    {
+        switch (type.toLowerCase()) {
+            case 'integer':
+                return parseInt(value);
+            case 'number':
+                return Number(value);
+            case 'string':
+                return String(value);
+            default:
+                throw new Error(`Unsupported type: "${type}"`);
+        }
+    }
+
+    protected formatArgumentValue(value: any, schema: ArgumentSchema)
+    {
+        if (schema.type) {
+            return this.convertValue(value, schema.type);
+        }
+
+        return value;
+    }
+
+    protected formatOptionValue(value: any, schema: OptionSchema)
+    {
+        if (schema.type) {
+            return this.convertValue(value, schema.type);
+        }
+
+        return value;
     }
 
     public async execute(): Promise<void> {
@@ -64,7 +96,12 @@ export class ConsoleApplication {
                         if (parts.length == 2) {
                             const [ arg, arv ] = parts;
 
-                            resultOptions[arg] = arv;
+                            if (command.options[arg]) {
+                                resultOptions[arg] = this.formatOptionValue(
+                                    arv,
+                                    command.options[arg]
+                                );
+                            }
                         }
                     }
                 }

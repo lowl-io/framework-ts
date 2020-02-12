@@ -1,12 +1,14 @@
 
+export type SupportedType = 'string'|'integer'|'number';
+
 export type ArgumentSchema = {
-    type: 'string'|'number',
+    type?: SupportedType,
     required: boolean,
 };
 export type Arguments = {[key: string]: ArgumentSchema};
 
 export type OptionSchema = {
-    type: 'string'|'number',
+    type?: SupportedType,
     default?: any;
 };
 export type Options = {[key: string]: OptionSchema};
