@@ -40,7 +40,7 @@ export class ConsoleApplication {
                 let index = 0;
 
                 for (const [argumentName, argumentSchema] of Object.entries(command.arguments)) {
-                    if (index in argv) {
+                    if (index in argvs) {
                         resultArguments[argumentName] = argvs[index];
                     } else {
                         if (argumentSchema.required) {

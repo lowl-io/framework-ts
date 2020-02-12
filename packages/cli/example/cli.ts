@@ -1,13 +1,15 @@
 import { ConsoleApplication } from "../src";
-import { AbstractCommand, Arguments, Options } from "../src/AbstractCommand";
+import { Arguments, Options, CommandInterface } from "../src/AbstractCommand";
 
 type MyCommandArguments = {
     url: string,
 };
 
-type MyCommandOptions = {};
+type MyCommandOptions = {
+    limit?: number;
+};
 
-class MyCommand implements AbstractCommand<MyCommandArguments, MyCommandOptions> {
+class MyCommand implements CommandInterface<MyCommandArguments, MyCommandOptions> {
     public readonly name: string = 'my:command';
     public readonly description: string = 'My Awesome Command';
     public readonly arguments: Arguments = {
@@ -16,10 +18,15 @@ class MyCommand implements AbstractCommand<MyCommandArguments, MyCommandOptions>
             required: true,
         }
     };
-    public readonly options: Options = {};
+    public readonly options: Options = {
+        'limit': {
+            type: 'number',
+        }
+    };
 
     public async execute(args: MyCommandArguments, opts: MyCommandOptions): Promise<void> {
         console.log('test', args.url);
+        console.log('test', opts.limit);
     }
 }
 
