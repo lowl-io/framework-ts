@@ -34,13 +34,16 @@ export class ConsoleApplication {
                 const command: CommandInterface<unknown, unknown> = this.commands[argv[0]];
                 const argvs = argv.splice(1);
 
-                let resultArguments: {[key: string]: any} = {};
-                let resultOptions: {[key: string]: any} = {};
+                let resultArguments:Record<string, any> = {};
+                let resultOptions: Record<string, any> = {};
 
                 let index = 0;
+                let slice = 0;
 
                 for (const [argumentName, argumentSchema] of Object.entries(command.arguments)) {
                     if (index in argvs) {
+                        slice++;
+
                         resultArguments[argumentName] = argvs[index];
                     } else {
                         if (argumentSchema.required) {
@@ -51,6 +54,27 @@ export class ConsoleApplication {
                     }
 
                     index++;
+                }
+
+                const options = argvs.slice(slice);
+
+                for (const option of options) {
+                    if (option.startsWith('--')) {
+                        let parts = option.substr(2).split('=');
+                        if (parts.length == 2) {
+                            const [ arg, arv ] = parts;
+
+                            resultOptions[arg] = arv;
+                        }
+                    }
+                }
+
+                console.log(resultOptions);
+
+                for (const [optionName, optionSchema] of Object.entries(command.options)) {
+                    if (!(optionName in resultOptions) && optionSchema.default !== undefined) {
+                        resultOptions[optionName] = optionSchema.default;
+                    }
                 }
 
                 await command.execute(resultArguments, resultOptions);    

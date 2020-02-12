@@ -6,7 +6,8 @@ export type ArgumentSchema = {
 export type Arguments = {[key: string]: ArgumentSchema};
 
 export type OptionSchema = {
-    type: 'string'|'number'
+    type: 'string'|'number',
+    default?: any;
 };
 export type Options = {[key: string]: OptionSchema};
 

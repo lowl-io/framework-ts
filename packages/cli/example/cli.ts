@@ -7,6 +7,7 @@ type MyCommandArguments = {
 
 type MyCommandOptions = {
     limit?: number;
+    def?: number;
 };
 
 class MyCommand implements CommandInterface<MyCommandArguments, MyCommandOptions> {
@@ -21,12 +22,17 @@ class MyCommand implements CommandInterface<MyCommandArguments, MyCommandOptions
     public readonly options: Options = {
         'limit': {
             type: 'number',
+        },
+        'def': {
+            type: 'number',
+            default: 5,
         }
     };
 
     public async execute(args: MyCommandArguments, opts: MyCommandOptions): Promise<void> {
-        console.log('test', args.url);
-        console.log('test', opts.limit);
+        console.log('url', args.url);
+        console.log('limit', opts.limit);
+        console.log('def', opts.def);
     }
 }
 
