@@ -10,7 +10,7 @@ export type OptionSchema = {
 };
 export type Options = {[key: string]: OptionSchema};
 
-export interface AbstractCommand<A = {}, O = {}> {
+export interface CommandInterface<A = {}, O = {}> {
     readonly name: string;
     readonly description: string;
     readonly arguments: Arguments;

@@ -1,12 +1,8 @@
-import { AbstractCommand } from './AbstractCommand';
+import { CommandInterface } from './AbstractCommand';
 import { HelpCommand } from './HelpCommand';
 
-export type CommandsMap = {
-    [key: string]: AbstractCommand,
-};
-
 export class ConsoleApplication {
-    protected commands: CommandsMap = {};
+    protected commands: Record<string, CommandInterface> = {};
 
     public constructor() {
         this.addCommand(
@@ -14,7 +10,7 @@ export class ConsoleApplication {
         )
     }
 
-    public addCommand(command: AbstractCommand): void {
+    public addCommand(command: CommandInterface): void {
         if (command.name) {
             this.commands[command.name] = command;
         } else {
@@ -24,7 +20,7 @@ export class ConsoleApplication {
         }
     }
 
-    public addCommands(commands: AbstractCommand[]): void {
+    public addCommands(commands: CommandInterface[]): void {
         for (const command of commands) {
             this.addCommand(command);
         }
@@ -35,7 +31,7 @@ export class ConsoleApplication {
 
         if (argv[0]) {
             if (argv[0] in this.commands) {
-                const command: AbstractCommand<unknown, unknown> = this.commands[argv[0]];
+                const command: CommandInterface<unknown, unknown> = this.commands[argv[0]];
                 const argvs = argv.splice(1);
 
                 let resultArguments: {[key: string]: any} = {};
